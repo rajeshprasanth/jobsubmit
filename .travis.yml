@@ -1,7 +1,7 @@
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -11,7 +11,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -21,7 +21,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -31,7 +31,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -41,7 +41,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -51,7 +51,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -61,7 +61,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -71,7 +71,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -81,7 +81,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -91,7 +91,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -101,7 +101,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -111,7 +111,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -121,7 +121,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -131,7 +131,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -141,7 +141,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
@@ -151,7 +151,7 @@ script:
 language: python
 dist: precise
 python:
-    - "3.6"
+    - "3.0"
 script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
