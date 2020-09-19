@@ -18,7 +18,7 @@ build:pass-test3-fedora:
   script:
     - cd tests
     - chmod +x ../jobsubmit
-    - ../jobsubmit ./cmd.lst 180,1,19,3,5,6,7,8,34,36,234,45,129,32
+    - ../jobsubmit ./cmd.lst 180,1,19,3,5,6,7,8,34,36,234,45,129,3
 
 build:pass-test4-fedora:
   image: fedora:latest
