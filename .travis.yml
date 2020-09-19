@@ -1,126 +1,158 @@
-build:test1.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test1.done
 
-build:test2.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test2.done
 
-build:test3.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test3.done
 
-build:test4.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test4.done
 
-build:test5.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test5.done
 
-build:test6.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test6.done
 
-build:test7.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test7.done
 
-build:test8.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test8.done
 
-build:test9.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test9.done
 
-build:test10.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test10.done
 
-build:test11.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test11.done
 
-build:test12.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test12.done
 
-build:test13.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test13.done
 
-build:test14.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test14.done
 
-build:test15.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
     - cat test15.done
 
-build:test16.fedora:
-  image: fedora:latest
-  script:
+language: python
+dist: precise
+python:
+    - "3.6"
+script:
     - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
     - ./run_test.sh
