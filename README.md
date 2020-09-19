@@ -13,9 +13,27 @@ The jobsubmit is official hosted in github repository at https://github.com/raje
 - [Features](#features)
 
 ## Download
-jobsubmit can be downloaded in two ways
+jobsubmit can be downloaded in two ways:
 
 ### Method:1
+The stable version of jobsubmit can be directly downloaded as an archive file from below address.
+
+### Method:2 (from github)
+Alternatively, developmental version can be download from this repository following below steps:
+
+#### From github
+Run below command to download from github repository
+```
+git clone https://github.com/rajeshprasanth/jobsubmit.git
+cd jobsubmit
+./jobsubmit
+```
+#### From gitlab
+Run below command to download from github repository
+```
+git clone https://gitlab.com/rajeshprasanth/jobsubmit.git
+cd jobsubmit
+./jobsubmit
 
 ## Installation
 Here is the installation procedure for installing Chimera:
