@@ -212,7 +212,7 @@ ls
 tree
 who
 whoami
-uname -a 
+uname -a
 sleep 10
 sleep 100
 ls
