@@ -1,35 +1,31 @@
-build:pass-test1-fedora:
+build:test1.fedora:
   image: fedora:latest
   script:
+    - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
-    - chmod +x ../jobsubmit
-    - ../jobsubmit ./cmd.lst all
+    - ./run_test.sh
+    - cat test1.done
 
-build:pass-test2-fedora:
+build:test2.fedora:
   image: fedora:latest
   script:
+    - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
-    - chmod +x ../jobsubmit 182
-    - ../jobsubmit ./cmd.lst
+    - ./run_test.sh
+    - cat test2.done
 
-
-build:pass-test3-fedora:
+build:test3.fedora:
   image: fedora:latest
   script:
+    - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
-    - chmod +x ../jobsubmit
-    - ../jobsubmit ./cmd.lst 180,1,19,3,5,6,7,8,34,36,234,45,129,3
+    - ./run_test.sh
+    - cat test3.done
 
-build:pass-test4-fedora:
+build:test4.fedora:
   image: fedora:latest
   script:
+    - chmod +x jobsubmit cleanup ./tests/*.sh
     - cd tests
-    - chmod +x ../jobsubmit
-    - ../jobsubmit ./cmd.lst 180-254
-
-build:fail-test1-fedora:
-  image: fedora:latest
-  script:
-    - cd tests
-    - chmod +x ../jobsubmit
-    - ../jobsubmit ./cmd.lst
+    - ./run_test.sh
+    - cat test4.done

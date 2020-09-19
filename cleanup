@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# Script to cleanup packages
+#
+rm -rf *log *done stdout stderr *.tar.gz
+cd tests
+rm -rf *log *done stdout stderr *.tar.gz
