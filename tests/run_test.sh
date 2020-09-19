@@ -30,7 +30,7 @@ fi
 ../jobsubmit ./cmd.lst|grep "For bug"  > /dev/null && touch test8.done
 # test-9
 ../jobsubmit ./cmd.lst 3
-if [ $(cat stdout/cmd.lst_line_3.out|xargs) == $(whoami) ];
+if [ $(cat stdout/cmd.lst_line_3.out) == $(whoami) ];
 then
   touch test9.done
 fi
@@ -38,23 +38,23 @@ fi
 ../jobsubmit ./cmd.lst 399|grep "Fatal Error: num > max_line in file" > /dev/null && touch test10.done
 # test-11
 ../jobsubmit ./cmd.lst 4,3
-if [ $(cat stdout/cmd.lst_line_3.out|xargs) == $(whoami) ];
+if [ $(cat stdout/cmd.lst_line_3.out) == $(whoami) ];
 then
   touch test11.done
 fi
 # test-12
-if [ $(cat stdout/cmd.lst_line_4.out|xargs) == $(uname) ];
+if [ $(cat stdout/cmd.lst_line_4.out) == $(uname) ];
 then
   touch test12.done
 fi
 # test-13
 ../jobsubmit ./cmd.lst 1-4
-if [ $(cat stdout/cmd.lst_line_3.out|xargs) == $(whoami) ];
+if [ $(cat stdout/cmd.lst_line_3.out) == $(whoami) ];
 then
   touch test13.done
 fi
 # test-14
-if [ $(cat stdout/cmd.lst_line_4.out|xargs) == $(uname) ];
+if [ $(cat stdout/cmd.lst_line_4.out) == $(uname) ];
 then
   touch test14.done
 fi
