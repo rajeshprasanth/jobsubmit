@@ -2,7 +2,7 @@
 # script to run test cases
 #
 
-python_ver="3.6"
+python_ver="3"
 
 # test-1
 ../cleanup 2> /dev/null
