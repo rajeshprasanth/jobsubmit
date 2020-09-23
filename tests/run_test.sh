@@ -62,6 +62,12 @@ fi
 ../jobsubmit ./cmd.lst 1-45 |grep "Fatal Error: end_line > max_line in file" > /dev/null && touch test15.done
 # test-16
 ../jobsubmit ./cmd.lst 4-1 |grep "Fatal Error: start_line > end_line" > /dev/null && touch test16.done
+# test-17
+../jobsubmit ./cmd.lst 0|grep "Fatal Error: num <= 0" > /dev/null && touch test17.done
+# test-18
+../jobsubmit ./cmd.lst 0-2|grep "Fatal Error: start_line <= 0" > /dev/null && touch test18.done
+# test-19
+../jobsubmit ./cmd.lst 0,1|grep "Fatal Error: num <= 0" > /dev/null && touch test19.done
 
 
 rm -rf *log stdout stderr notdone done
