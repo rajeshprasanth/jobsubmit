@@ -31,11 +31,11 @@ from datetime import datetime
 
 major_version="1"
 minor_version="0"
-revision_version="1"
+revision_version="2"
 
 def version():
 	print("jobsubmit"+"\t"+major_version+"."+minor_version+"."+revision_version)
-	print("Copyright (C) 2015 Free Software Foundation, Inc. \nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n")
+	print("Copyright (C) 2015 Free Software Foundation, Inc. \nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.")
 
 def help_msg():
 	print("Usage: jobsubmit [options] [args]\n")
@@ -119,6 +119,9 @@ def getargs():
 			if max(args) > numline:
 				print("Fatal Error: num > max_line in file")
 				exit(-1)
+			if min(args) <= 0:
+				print("Fatal Error: num <= 0")
+				exit(-1)
 			return ffilename,args
 		#-----------------------------------------------
 		# Type :: 3
@@ -137,6 +140,9 @@ def getargs():
 			if start_line > end_line :
 				print("Fatal Error: start_line > end_line")
 				exit(-1)
+			if start_line <=0 :
+				print("Fatal Error: start_line <= 0")
+				exit(-1)
 			args=list(range(start_line,end_line+1))
 			return ffilename,args
 		#-----------------------------------------------
@@ -148,6 +154,9 @@ def getargs():
 			args.append(arg1)
 			if max(args) > numline:
 				print("Fatal Error: num > max_line in file")
+				exit(-1)
+			if min(args) <= 0:
+				print("Fatal Error: num <= 0")
 				exit(-1)
 			return ffilename,args
 
