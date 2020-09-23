@@ -1,0 +1,7 @@
+Version - 1.0.1
+First release
+
+Version - 1.0.2
+Changed
+	Fix for log file. They will be created only if the workflow started.
+	GNU/GPL-V3 statement added to the source code.
