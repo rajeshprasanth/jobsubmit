@@ -1,31 +1,10 @@
-<p align="center">
-<img alt="Gitlab pipeline status" src="https://img.shields.io/gitlab/pipeline/rajeshprasanth/jobsubmit/master">
+| **Continuous Integration**   | <img alt="Gitlab pipeline status" src="https://img.shields.io/gitlab/pipeline/rajeshprasanth/jobsubmit/master">   | Downloads   | <img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/rajeshprasanth/jobsubmit/total">   |
+|-----|-----|-----|-----|
+| **Pull Requests**   | <img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed/rajeshprasanth/jobsubmit"><br><img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/rajeshprasanth/jobsubmit">   | **Issues**   | <img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/rajeshprasanth/jobsubmit"><br><img alt="GitHub issues" src="https://img.shields.io/github/issues/rajeshprasanth/jobsubmit">|
+| **License**   | <img alt="GitHub" src="https://img.shields.io/github/license/rajeshprasanth/jobsubmit">  | **Repository**  |<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/rajeshprasanth/jobsubmit">|
+| **Release**  | <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/rajeshprasanth/jobsubmit"><br><img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/rajeshprasanth/jobsubmit"> | **Commit History**  | <img alt="GitHub contributors" src="https://img.shields.io/github/contributors/rajeshprasanth/jobsubmit"><br><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/rajeshprasanth/jobsubmit"><br><img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/rajeshprasanth/jobsubmit">|
 
-<img alt="GitHub repo size" src="https://img.shields.io/github/repo-size/rajeshprasanth/jobsubmit">
 
-<img alt="GitHub All Releases" src="https://img.shields.io/github/downloads/rajeshprasanth/jobsubmit/total">
-
-<img alt="GitHub closed pull requests" src="https://img.shields.io/github/issues-pr-closed/rajeshprasanth/jobsubmit">
-
-<img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/rajeshprasanth/jobsubmit">
-
-<img alt="GitHub closed issues" src="https://img.shields.io/github/issues-closed/rajeshprasanth/jobsubmit">
-
-<img alt="GitHub issues" src="https://img.shields.io/github/issues/rajeshprasanth/jobsubmit">
-
-<img alt="GitHub" src="https://img.shields.io/github/license/rajeshprasanth/jobsubmit">
-
-<img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/rajeshprasanth/jobsubmit">
-
-<img alt="GitHub Release Date" src="https://img.shields.io/github/release-date/rajeshprasanth/jobsubmit">
-
-<img alt="GitHub contributors" src="https://img.shields.io/github/contributors/rajeshprasanth/jobsubmit">
-
-<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/rajeshprasanth/jobsubmit">
-
-<img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/rajeshprasanth/jobsubmit">
-
-</p>
 
 # jobsubmit
 jobsubmit is a python script designed for reading the list of command from a file and execute in particular order.
