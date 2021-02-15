@@ -72,10 +72,10 @@ def getargs():
 			version()
 			exit(0)
 		elif sys.argv[1] == "-c" or sys.argv[1] == "--cleanup":
-			os.system("rm -rf stdout stderr done")
+			os.system("rm -rf stdout stderr done notdone")
 			exit(0)
 		elif sys.argv[1] == "-fc" or sys.argv[1] == "--fullcleanup":
-			os.system("rm -rf stdout stderr done *.log")
+			os.system("rm -rf stdout stderr done notdone *.log")
 			exit(0)
 		else:
 			help_msg()
