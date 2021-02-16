@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#
+i=10
+date_str=$(date +"%Y/%m/%d %H:%M:%S")
+
+logfile_cnt=$(ls jobsubmit.*.log 2> /dev/null |wc -l )
+
+
+queued_count() {
+  return $(grep "Queued Workflow #" $1|wc -l)
+}
+
+completed_count() {
+  completed_cnt=$(grep "completed from" $1|wc -l)
+  return $completed_cnt
+}
+
+failed_count() {
+  failed_cnt=$(grep "aborted from" $1|wc -l)
+  return $failed_cnt
+}
+
+running_count() {
+  running_cnt=1
+  grep Summary $1>/dev/null
+
+  if [  "$?" == "0"  ]; then
+    running_cnt=0
+  fi
+  return $running_cnt
+}
+
+pending_count(){
+  pend_cnt=$(expr "$1" - "$2" - "$3" - "$4")
+  return $pend_cnt
+}
+alertscreen() {
+  echo "+--------------------------------------------------------------------------+"
+  echo "|                           Jobsubmit Alertscreen                          |"
+  echo "+--------------------------------------------------------------------------+"
+  echo "| Date :: $date_str                        Update Interval :: $i |"
+  echo "+--------------------------------------------------------------------------+"
+  echo "Total Log files found :: $logfile_cnt"
+  echo "----------------------------------------------------------------------------"
+  echo "Session       Queued       Completed       Running       Failed      Pending"
+  echo "----------------------------------------------------------------------------"
+  for  logfile in $(ls -1v jobsubmit.*.log 2> /dev/null);do
+    queued_count $logfile
+    que_cnt=$?
+    completed_count $logfile
+    com_cnt=$?
+    running_count $logfile
+    run_cnt=$?
+    failed_count $logfile
+    fail_cnt=$?
+    pending_count $que_cnt $com_cnt $run_cnt $fail_cnt
+    pend_cnt=$?
+    session=$(echo $logfile | gawk -F. {'print $2'})
+    printf "%s %7s %15s %13s %12s %12s\n" $session $que_cnt $com_cnt $run_cnt $fail_cnt $pend_cnt
+  done
+  echo "----------------------------------------------------------------------------"
+
+}
+
+
+alertscreen

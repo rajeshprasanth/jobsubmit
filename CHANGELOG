@@ -6,3 +6,8 @@ Changed
 	Fix for log file. They will be created only if the workflow started.
 	GNU/GPL-V3 statement added to the source code.
 	Fix for job starting while 0th line in list specified.
+
+Version - 1.0.3
+Changed on Tue Feb 16 15:51:01 IST 2021
+	Alertscreen to monitor Workflows
+	notdone directory deletion fix

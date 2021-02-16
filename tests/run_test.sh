@@ -32,7 +32,7 @@ fi
 python${python_ver} ../jobsubmit ./cmd.lst|grep "For bug"  > /dev/null && touch test8.done
 # test-9
 python${python_ver} ../jobsubmit ./cmd.lst 3
-if [ $(cat stdout/cmd.lst_line_3.out) == $(whoami) ];
+if [[ $(cat stdout/cmd.lst_line_3.out) -eq $(whoami) ]];
 then
   touch test9.done
 fi
@@ -40,18 +40,18 @@ fi
 python${python_ver} ../jobsubmit ./cmd.lst 399|grep "Fatal Error: num > max_line in file" > /dev/null && touch test10.done
 # test-11
 python${python_ver} ../jobsubmit ./cmd.lst 4,3
-if [ $(cat stdout/cmd.lst_line_3.out) == $(whoami) ];
+if [[ $(cat stdout/cmd.lst_line_3.out) == $(whoami) ]];
 then
   touch test11.done
 fi
 # test-12
-if [ $(cat stdout/cmd.lst_line_4.out) == $(uname) ];
+if [[ $(cat stdout/cmd.lst_line_4.out) == $(uname) ]];
 then
   touch test12.done
 fi
 # test-13
 python${python_ver} ../jobsubmit ./cmd.lst 1-4
-if [ $(cat stdout/cmd.lst_line_3.out) == $(whoami) ];
+if [[ $(cat stdout/cmd.lst_line_3.out) == $(whoami) ]];
 then
   touch test13.done
 fi
