@@ -40,7 +40,6 @@ def version():
 
 def help_msg():
 	print("Usage: jobsubmit [options] [args]\n")
-
 	print("option:")
 	print("   -h|--help\t\tDisplay this information")
 	print("   -v|--version\t\tDisplay the version of script.")
