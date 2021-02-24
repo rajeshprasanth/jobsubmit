@@ -183,6 +183,7 @@ def runjobs(infile,argument):
 		logging.info('================================')
 
 		logging.info('Input file found in directory: %s', filepath)
+		logging.info('Current directory: %s', os.getcwd())
 		logging.info('Input file : %s', filename)
 		logging.info('Reading input file %s', filename)
 		logging.info('--------------------------------')
