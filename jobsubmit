@@ -182,6 +182,7 @@ def runjobs(infile,argument):
 		logging.info('>>>Program Started')
 		logging.info('================================')
 		logging.info("jobsubmit"+"\t"+major_version+"."+minor_version+"."+revision_version)
+		logging.info('--------------------------------')
 		logging.info('Input file found in directory: %s', filepath)
 		logging.info('Current directory: %s', os.getcwd())
 		logging.info('Input file : %s', filename)
