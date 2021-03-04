@@ -13,3 +13,6 @@ Changed on Tue Feb 16 15:51:01 IST 2021
 	notdone directory deletion fix
 Changed on Wed Feb 24 08:56:11 IST 2021
 	getcwd to print current working directory
+Changed on Thu Mar  4 06:26:06 IST 2021
+	minor changes to cleanup Script
+	version number added in log file
