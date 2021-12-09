@@ -85,3 +85,7 @@ args:
 For bug reporting please reach out <rajeshprasanth@rediffmail.com>
 
 ```
+
+## TODO
+ 1. Rewrite documentation to mention use of install.sh
+ 2. Remove dependency on bash script to display alertscreen
