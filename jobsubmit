@@ -265,5 +265,9 @@ def runjobs(infile,argument):
 		print(e)
 		#logging.critical('Input file %s not found in directory: %s', filename, filepath)
 
-fname,argu=getargs()
-runjobs(fname,argu)
+def main():
+	fname,argu=getargs()
+	runjobs(fname,argu)
+
+if __name__ == "__main__":
+    main()
