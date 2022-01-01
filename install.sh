@@ -5,8 +5,9 @@
 #------------------------------#
 #
 main () {
-	mkdir -p /home/$USER/jobsubmit-config
-	cp -R * /home/$USER/jobsubmit-config
+
+	mkdir -p /home/$USER/jobsubmit-config/
+	cp -R * /home/$USER/jobsubmit-config/
 	echo "#"
 	echo "#------------------------------------------------------------------------------"
 	echo "# Path variable for jobsubmit"
@@ -15,5 +16,7 @@ main () {
 
 }
 
+cp ~/.bashrc ~/.bashrc.jobsubmit.rollback
 main >>  ~/.bashrc
+echo "Original ~/.bashrc has been copied to ~/.bashrc.jobsubmit.rollback"
 echo "Installation completed."

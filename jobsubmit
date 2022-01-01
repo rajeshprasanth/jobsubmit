@@ -61,7 +61,6 @@ def testargs():
 	print(sys.argv[2])
 
 
-
 def getargs():
 	if len(sys.argv) < 2  or len(sys.argv) > 3:
 		help_msg()
@@ -167,13 +166,14 @@ def getargs():
 			return ffilename,args
 
 
+
 def runjobs(infile,argument):
 
 	filepath,filename=os.path.split(infile)
 	try:
 		now = datetime.now()
 
-		logfilename = 'jobsubmit.' + str(now.strftime("%y%m%d%H%M%S")) + '.log'
+		logfilename = 'jobsubmit.' + str(now.strftime("%y%m%d%H%M%S%f")) + '.log'
 
 		logging.basicConfig(filename=logfilename, filemode='w', format='%(asctime)s - %(process)d - %(levelname)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.INFO)
 
