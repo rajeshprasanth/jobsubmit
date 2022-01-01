@@ -32,7 +32,7 @@ from datetime import datetime
 
 major_version="1"
 minor_version="0"
-revision_version="3"
+revision_version="4"
 
 def version():
 	print("jobsubmit"+"\t"+major_version+"."+minor_version+"."+revision_version)

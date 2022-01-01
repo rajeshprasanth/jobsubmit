@@ -16,6 +16,8 @@ Changed on Wed Feb 24 08:56:11 IST 2021
 Changed on Thu Mar  4 06:26:06 IST 2021
 	minor changes to cleanup Script
 	version number added in log file
+
+Version - 1.0.4
 Changed on Sat Jan  1 17:08:33 IST 2022
 	added millisecond to log file
 	added install.sh for installation with rollbacks
