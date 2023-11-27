@@ -1,0 +1,273 @@
+#!/bin/python3
+#
+#===========================================================================================================================
+#    jobsubmit is a python script designed for reading the list of command from a file and execute in particular order.
+#    Copyright (C) 2020  Rajesh Prashanth Anandavadivel
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#============================================================================================================================
+#-----------------------------------------------------------------------------------------------
+import os
+import sys
+import logging
+import subprocess
+import signal
+import shutil
+import argparse
+import fnmatch
+
+from datetime import datetime
+
+
+major_version="1"
+minor_version="0"
+revision_version="4"
+
+def version():
+	print("jobsubmit"+"\t"+major_version+"."+minor_version+"."+revision_version)
+	print("Copyright (C) 2015 Free Software Foundation, Inc. \nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.")
+
+def help_msg():
+	print("Usage: jobsubmit [options] [args]\n")
+	print("option:")
+	print("   -h|--help\t\tDisplay this information")
+	print("   -v|--version\t\tDisplay the version of script.")
+	print("   -c|--cleanup\t\tCleanup stdout and stderr directories in current directory(if any)")
+	print("  -fc|--fullcleanup\tCleanup stdout,stderr directories and logfile in current directory(if any)")
+	print("  -as|--alertscreen\tBrings up alertscreen for monitoring workflows\n")
+
+	print("args:")
+	print("  <file> all\t\tRun all the lines from the <file>")
+	print("  <file> 1\t\tRun 1st line from the <file>")
+	print("  <file> 1,2,3\t\tRun 1,2 and 3rd lines from the <file>")
+	print("  <file> 1-5\t\tRun 1 to 5th lines from the <file>\n")
+	print("For bug reporting please reach out <rajeshprasanth@rediffmail.com>")
+
+def testargs():
+	print("arg len:",len(sys.argv))
+	print(sys.argv[0])
+	print(sys.argv[1])
+	print(sys.argv[2])
+
+
+def getargs():
+	if len(sys.argv) < 2  or len(sys.argv) > 3:
+		help_msg()
+		exit(-1)
+
+	if len(sys.argv) == 2:
+		if sys.argv[1] == "-h" or sys.argv[1] == "--help":
+			help_msg()
+			exit(0)
+		elif sys.argv[1] == "-v" or sys.argv[1] == "--version":
+			version()
+			exit(0)
+		elif sys.argv[1] == "-c" or sys.argv[1] == "--cleanup":
+			os.system("rm -rf stdout stderr done notdone")
+			exit(0)
+		elif sys.argv[1] == "-fc" or sys.argv[1] == "--fullcleanup":
+			os.system("rm -rf stdout stderr done notdone *.log")
+			exit(0)
+		elif sys.argv[1] == "-as" or sys.argv[1] == "--alertscreen":
+			os.system("watch -t -n 10 jobsubmit-cli")
+			exit(0)
+		else:
+			help_msg()
+			exit(-1)
+
+
+	if len(sys.argv) == 3:
+		ffilename=sys.argv[1]
+		arg_full=sys.argv[2]
+
+		counter = 1
+		try:
+			f = open (ffilename, 'r')
+			# Reading from file
+			for line in f:
+				if line.strip() != "":
+					counter = counter + 1
+			numline=counter-1
+
+		except IOError as e:
+			print(e)
+			exit(-1)
+
+
+		#-----------------------------------------------
+		# Type :: 0
+		#-----------------------------------------------
+
+		if arg_full == "all":
+			args=list(range(1,numline+1))
+			return ffilename,args
+		#-----------------------------------------------
+		# Type :: 2
+		#-----------------------------------------------
+
+		elif arg_full.find(',') > -1:
+			args=arg_full.split(',')
+
+			arg1=[int(i) for i in args]
+			args=arg1
+			if max(args) > numline:
+				print("Fatal Error: num > max_line in file")
+				exit(-1)
+			if min(args) <= 0:
+				print("Fatal Error: num <= 0")
+				exit(-1)
+			return ffilename,args
+		#-----------------------------------------------
+		# Type :: 3
+		#-----------------------------------------------
+		elif arg_full.find('-') > -1:
+			start_line=int(arg_full.split('-')[0])
+			end_line=int(arg_full.split('-')[1])
+
+			if end_line > numline:
+				print("Fatal Error: end_line > max_line in file")
+				exit(-1)
+
+			if start_line > numline:
+				print("Fatal Error: start_line > max_line in file")
+				exit(-1)
+			if start_line > end_line :
+				print("Fatal Error: start_line > end_line")
+				exit(-1)
+			if start_line <=0 :
+				print("Fatal Error: start_line <= 0")
+				exit(-1)
+			args=list(range(start_line,end_line+1))
+			return ffilename,args
+		#-----------------------------------------------
+		# Type :: 1
+		#-----------------------------------------------
+		else:
+			args=[]
+			arg1=int(arg_full)
+			args.append(arg1)
+			if max(args) > numline:
+				print("Fatal Error: num > max_line in file")
+				exit(-1)
+			if min(args) <= 0:
+				print("Fatal Error: num <= 0")
+				exit(-1)
+			return ffilename,args
+
+
+
+def runjobs(infile,argument):
+
+	filepath,filename=os.path.split(infile)
+	try:
+		now = datetime.now()
+
+		logfilename = 'jobsubmit.' + str(now.strftime("%y%m%d%H%M%S%f")) + '.log'
+
+		logging.basicConfig(filename=logfilename, filemode='w', format='%(asctime)s - %(process)d - %(levelname)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S', level=logging.INFO)
+
+		f = open (infile, 'r')
+		logging.info('================================')
+		logging.info('>>>Program Started')
+		logging.info('================================')
+		logging.info("jobsubmit"+"\t"+major_version+"."+minor_version+"."+revision_version)
+		logging.info('--------------------------------')
+		logging.info('Input file found in directory: %s', filepath)
+		logging.info('Current directory: %s', os.getcwd())
+		logging.info('Input file : %s', filename)
+		logging.info('Reading input file %s', filename)
+		logging.info('--------------------------------')
+		logging.info('Queued Workflow')
+		logging.info('--------------------------------')
+		counter = 1
+		for i in argument:
+			logging.info('Queued Workflow # %d from line # %d',counter,i)
+			counter = counter + 1
+		logging.info('--------------------------------')
+		logging.info('Total Workflows queued : %d',len(argument))
+		logging.info('--------------------------------')
+		os.makedirs("stdout", exist_ok = True)
+		os.makedirs("stderr", exist_ok = True)
+		os.makedirs("done", exist_ok = True)
+		os.makedirs("notdone", exist_ok = True)
+
+		job=f.readlines()
+
+		wf_counter = 1
+		failed_counter = 0
+		completed_counter = 0
+
+
+		for i in argument:
+			j = i - 1
+			cmd1=job[j]
+
+
+			cmd=cmd1.strip()
+
+			fout = open("stdout/"+filename+"_line_"+str(i)+".out",'w')
+			ferr = open("stderr/"+filename+"_line_"+str(i)+".err",'w')
+
+			proc = subprocess.Popen(cmd,shell=True,stdout=fout,stderr=ferr)
+
+			logging.info('Workflow # %d started from %s at line # %d with pid: %d', wf_counter ,filename,i,proc.pid)
+			try:
+				proc.wait()
+			except KeyboardInterrupt:
+				logging.critical('Keyboard intertupt encountered.')
+				proc.kill()
+				logging.error('Workflow # %d aborted from %s at line # %d due to keyboard interupt with exit code: 130', wf_counter,filename,i)
+				failed_counter = failed_counter + 1
+				logging.info('--------------------------------')
+				logging.info('Summary')
+				logging.info('--------------------------------')
+				logging.info('Completed workflows  : %d',completed_counter)
+				logging.info('Failed workflows     : %d',failed_counter)
+				logging.info('Pending workflows    : %d',len(argument) - failed_counter-completed_counter)
+				logging.info('--------------------------------')
+				logging.info('================================')
+				logging.info('>>>Program Completed')
+				logging.info('================================')
+				exit(-1)
+
+			if proc.returncode != 0:
+				logging.error('Workflow # %d aborted from %s at line # %d with exit code: %d', wf_counter,filename,i,proc.returncode)
+				fnotdone = open("notdone/"+filename+"_line_"+str(i)+".notdone",'w')
+				failed_counter = failed_counter + 1
+			else:
+				logging.info('Workflow # %d completed from %s at line # %d with exit code: %d', wf_counter,filename,i,proc.returncode)
+				fdone = open("done/"+filename+"_line_"+str(i)+".done",'w')
+				completed_counter = completed_counter + 1
+			wf_counter = wf_counter + 1
+		logging.info('--------------------------------')
+		logging.info('Summary')
+		logging.info('--------------------------------')
+		logging.info('Completed workflows  : %d',completed_counter)
+		logging.info('Failed workflows     : %d',failed_counter)
+		logging.info('Pending workflows    : %d',len(argument) - failed_counter-completed_counter)
+		logging.info('--------------------------------')
+		logging.info('================================')
+		logging.info('>>>Program Completed')
+		logging.info('================================')
+
+	except IOError as e:
+		print(e)
+		#logging.critical('Input file %s not found in directory: %s', filename, filepath)
+
+def main():
+	fname,argu=getargs()
+	runjobs(fname,argu)
+
+if __name__ == "__main__":
+    main()
