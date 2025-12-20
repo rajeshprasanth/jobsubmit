@@ -1,0 +1,294 @@
+\documentclass[12pt,a4paper]{article}
+
+% =================================================
+% Page layout (A4, scientific margins)
+% =================================================
+\usepackage[a4paper,
+            left=25mm,
+            right=25mm,
+            top=25mm,
+            bottom=25mm]{geometry}
+
+% =================================================
+% Fonts and justification
+% =================================================
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{setspace}
+\usepackage{ragged2e}
+\usepackage{microtype}
+
+% =================================================
+% Code listings
+% =================================================
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  basicstyle=\ttfamily\small,
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  showstringspaces=false
+}
+
+% =================================================
+% Hyperlinks
+% =================================================
+\usepackage[hidelinks]{hyperref}
+
+% =================================================
+% Document begins
+% =================================================
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{Jobsubmit User Manual}} \\[0.4cm]
+    {\large Version 1.0.8} \\[0.2cm]
+    {\large GNU General Public License (GPL)} \\[1cm]
+    \textbf{Author} \\[0.2cm]
+    Rajesh Prashanth Anandavadivel
+\end{center}
+
+\vspace{1cm}
+\onehalfspacing
+\justifying
+
+% =================================================
+\section{Introduction}
+
+Jobsubmit is a lightweight, platform-independent job execution utility designed for scientific computing, batch processing, and reproducible workflows. It executes commands from a list file sequentially while clearly reporting job start time, completion status, execution duration, process ID, and exit code.
+
+The design philosophy emphasizes simplicity, transparency, and deterministic behavior, making Jobsubmit suitable for local machines, login nodes, virtual machines, continuous integration pipelines, and development environments.
+
+Jobsubmit is not intended to replace full-featured workload managers or schedulers. Instead, it provides a minimal and predictable execution layer for controlled, sequential workflows.
+
+% =================================================
+\section{Key Features}
+
+Jobsubmit provides the following core features:
+
+\begin{itemize}
+    \item Sequential execution of commands from a text file
+    \item Explicit reporting of:
+    \begin{itemize}
+        \item Job start date and time
+        \item Job completion or failure date and time
+        \item Execution duration in HH:MM:SS format
+        \item Process ID (PID)
+        \item Exit code
+    \end{itemize}
+    \item Separate capture of standard output and standard error
+    \item Clean, scientific-style console output
+    \item Cross-platform compatibility (Linux, macOS, Windows)
+    \item No external Python dependencies
+    \item Simple installation and clean project layout
+\end{itemize}
+
+% =================================================
+\section{Project Structure}
+
+The Jobsubmit distribution follows a simple and transparent directory layout:
+
+\begin{lstlisting}
+jobsubmit/
+│   .gitlab-ci.yml
+│   .travis.yml
+│   CHANGELOG
+│   LICENSE
+│   README.md
+│
+├── bin/
+│   └── jobsubmit
+│
+├── docs/
+│
+├── logs/
+│
+├── tests/
+│   └── cmd.lst
+│
+└── tools/
+    └── install.sh
+\end{lstlisting}
+
+% =================================================
+\section{System Requirements}
+
+\subsection{Software Requirements}
+\begin{itemize}
+    \item Python version 3.7 or newer
+    \item Bash shell (required for the installer on Linux and macOS)
+\end{itemize}
+
+No third-party Python modules are required.
+
+\subsection{Hardware Requirements}
+Jobsubmit has no specific hardware requirements and can be executed on desktops, laptops, virtual machines, and CI runners.
+
+% =================================================
+\section{Installation}
+
+\subsection{Interactive Installation (Linux / macOS)}
+
+From the project root directory, execute:
+
+\begin{lstlisting}
+bash tools/install.sh
+\end{lstlisting}
+
+The installer performs the following actions:
+
+\begin{itemize}
+    \item Prompts for an installation directory
+    \item Copies the Jobsubmit executable
+    \item Sets executable permissions
+    \item Optionally adds the installation directory to the user's PATH
+    \item Creates output directories for standard output and error
+\end{itemize}
+
+After installation, reload the shell configuration:
+
+\begin{lstlisting}
+source ~/.bashrc
+\end{lstlisting}
+
+\subsection{Manual Installation}
+
+\begin{lstlisting}
+mkdir -p ~/jobsubmit
+cp bin/jobsubmit ~/jobsubmit/
+chmod +x ~/jobsubmit/jobsubmit
+export PATH=$PATH:~/jobsubmit
+\end{lstlisting}
+
+To make the PATH modification permanent, add the export command to \texttt{\textasciitilde/.bashrc} or \texttt{\textasciitilde/.profile}.
+
+\subsection{Windows Installation}
+
+On Windows systems, Jobsubmit can be executed directly using Python:
+
+\begin{lstlisting}
+python bin\jobsubmit cmd.lst all
+\end{lstlisting}
+
+Executable binaries generated using tools such as Nuitka or PyInstaller may also be used if available.
+
+% =================================================
+\section{Usage}
+
+\subsection{Command Syntax}
+
+\begin{lstlisting}
+jobsubmit <command_file> <line_selection>
+\end{lstlisting}
+
+\subsection{Examples}
+
+\begin{lstlisting}
+jobsubmit cmd.lst all
+jobsubmit cmd.lst 3
+jobsubmit cmd.lst 1-5
+jobsubmit cmd.lst 1,3,7
+\end{lstlisting}
+
+% =================================================
+\section{Command File Format}
+
+The command file (commonly named \texttt{cmd.lst}) defines the workflows to be executed.
+
+\begin{itemize}
+    \item One command per line
+    \item Blank lines are ignored
+    \item Commands are executed sequentially
+\end{itemize}
+
+\subsection{Example}
+
+\begin{lstlisting}
+echo "Job 1"
+sleep 2
+invalid_command
+echo "Job 4"
+\end{lstlisting}
+
+% =================================================
+\section{Output Files}
+
+For each executed command, Jobsubmit generates:
+
+\begin{itemize}
+    \item \texttt{stdout/<cmdfile>\_line\_<N>.out}
+    \item \texttt{stderr/<cmdfile>\_line\_<N>.err}
+\end{itemize}
+
+These files enable post-run inspection, debugging, and archival.
+
+% =================================================
+\section{Exit Codes}
+
+\begin{itemize}
+    \item Exit code \texttt{0}: Command executed successfully
+    \item Non-zero exit code: Command execution failed
+\end{itemize}
+
+Jobsubmit itself exits with a non-zero status only in the event of fatal errors such as invalid input or missing files.
+
+% =================================================
+\section{Continuous Integration}
+
+Jobsubmit includes configuration files for:
+
+\begin{itemize}
+    \item GitLab CI (\texttt{.gitlab-ci.yml})
+    \item Travis CI (\texttt{.travis.yml})
+\end{itemize}
+
+These configurations ensure consistent behavior across supported platforms.
+
+% =================================================
+\section{License}
+
+Jobsubmit is distributed under the \textbf{GNU General Public License (GPL)}.
+Users are free to use, modify, and redistribute the software under the terms of the GPL.
+
+See the \texttt{LICENSE} file for the complete license text.
+
+% =================================================
+\section{Author}
+
+\textbf{Rajesh Prashanth Anandavadivel}
+
+Originally developed as a practical utility for managing reproducible scientific and computational workflows.
+
+% =================================================
+\section{Changelog}
+
+All notable changes, version updates, and fixes are documented in the \texttt{CHANGELOG} file.
+
+% =================================================
+\section{Philosophy}
+
+Jobsubmit is intentionally:
+
+\begin{itemize}
+    \item Minimal
+    \item Predictable
+    \item Transparent
+    \item Script-friendly
+\end{itemize}
+
+It is not intended to replace full-fledged schedulers such as SLURM or PBS, but to provide a reliable execution tool for controlled, sequential workflows.
+
+% =================================================
+\section{Contributing}
+
+Bug reports, improvements, and suggestions are welcome.
+Contributions should remain focused, readable, and aligned with the scientific intent of the project.
+
+\vfill
+\begin{center}
+\textit{End of User Manual}
+\end{center}
+
+\end{document}

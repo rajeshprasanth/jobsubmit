@@ -1,0 +1,256 @@
+#!/usr/bin/env python3
+#
+#===========================================================================================================================
+# Jobsubmit - Python workflow submission tool
+#
+# Original Author: Rajesh Prashanth Anandavadivel (2020)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+#===========================================================================================================================
+
+import os
+import sys
+import subprocess
+from pathlib import Path
+from datetime import datetime
+import argparse
+import time
+
+VERSION = (1, 0, 5)
+
+def print_version():
+    print(f"jobsubmit {VERSION[0]}.{VERSION[1]}.{VERSION[2]}")
+    print("Copyright (C) 2015 Free Software Foundation, Inc.")
+    print("This is free software; see the source for copying conditions. There is NO warranty.")
+
+def cleanup(dirs_only=True):
+    """
+    Cleanup output directories and optionally log files.
+
+    Args:
+        dirs_only (bool): If True, remove only 'stdout' and 'stderr'.
+                          If False, remove log files too.
+    """
+    # Directories to remove
+    for d in ["stdout", "stderr"]:
+        path = Path(d)
+        if path.exists() and path.is_dir():
+            for f in path.iterdir():
+                try:
+                    f.unlink()  # Remove files inside directory
+                except Exception as e:
+                    print(f"Failed to remove {f}: {e}")
+            try:
+                path.rmdir()  # Remove the directory itself
+            except Exception as e:
+                print(f"Failed to remove directory {path}: {e}")
+
+    if not dirs_only:
+        # Remove log files matching pattern jobsubmit.*.log
+        for log_file in Path('.').glob("jobsubmit.*.log"):
+            try:
+                log_file.unlink()
+            except Exception as e:
+                print(f"Failed to remove log file {log_file}: {e}")
+
+    print("Cleanup completed.")
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Submit jobs from a command list file.")
+
+    # Optional flags
+    parser.add_argument("-v", "--version", action="store_true", help="Show version")
+    parser.add_argument("-c", "--cleanup", action="store_true", help="Cleanup stdout and stderr directories")
+    parser.add_argument("-fc", "--fullcleanup", action="store_true", help="Cleanup stdout, stderr, and log files")
+
+    # Positional arguments (optional if flags are used)
+    parser.add_argument("file", nargs="?", help="Command file to execute")
+    parser.add_argument("lines", nargs="?", help="Lines to execute (all, 1, 1-5, 1,3,5)")
+
+    args = parser.parse_args()
+
+    # Handle flags first
+    if args.version:
+        print_version()
+        sys.exit(0)
+    if args.cleanup:
+        cleanup(dirs_only=True)
+        sys.exit(0)
+    if args.fullcleanup:
+        cleanup(dirs_only=False)
+        sys.exit(0)
+
+    # If file or lines are missing, show help
+    if not args.file or not args.lines:
+        parser.print_help()
+        sys.exit(1)
+
+    return args.file, args.lines
+
+
+def parse_line_selection(line_arg, total_lines):
+    if line_arg.lower() == "all":
+        return list(range(1, total_lines + 1))
+    elif "," in line_arg:
+        lines = [int(x) for x in line_arg.split(",")]
+    elif "-" in line_arg:
+        start, end = map(int, line_arg.split("-"))
+        lines = list(range(start, end + 1))
+    else:
+        lines = [int(line_arg)]
+
+    if any(x <= 0 or x > total_lines for x in lines):
+        raise ValueError("Line number out of range")
+    return lines
+
+def format_duration(seconds):
+    hrs = int(seconds // 3600)
+    mins = int((seconds % 3600) // 60)
+    secs = int(seconds % 60)
+    return f"{hrs:02d}:{mins:02d}:{secs:02d}"
+
+def run_jobs(file_path, lines_to_run):
+    file_path = Path(file_path)
+    if not file_path.is_file():
+        raise FileNotFoundError(f"{file_path} not found")
+
+    with file_path.open() as f:
+        commands = [line.strip() for line in f if line.strip()]
+
+    # Create output directories
+    for d in ["stdout", "stderr"]:
+        Path(d).mkdir(exist_ok=True)
+
+    # --- Program start header ---
+    print("="*70)
+    now = datetime.now()
+    print(">>> Jobsubmit Started")
+    print(f"Date: {now.date()}")
+    print(f"Time: {now.time().strftime('%H:%M:%S')}")
+    print(f"Input file: {file_path}")
+    print(f"Total workflows queued: {len(lines_to_run)}")
+    print("-"*70)
+
+    workflow_summary = []
+    completed, failed = 0, 0
+
+    for idx, line_no in enumerate(lines_to_run, start=1):
+        cmd = commands[line_no - 1]
+        stdout_file = Path("stdout") / f"{file_path.stem}_line_{line_no}.out"
+        stderr_file = Path("stderr") / f"{file_path.stem}_line_{line_no}.err"
+
+        start_time = time.time()
+        start_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        print(f"[Workflow #{idx}] STARTED at {start_ts}")
+
+        pid = None
+        status = "Failed"
+        exit_code = None
+
+        try:
+            with stdout_file.open('w') as fout, stderr_file.open('w') as ferr:
+                use_shell = os.name != 'nt'
+                proc = subprocess.Popen(cmd, shell=use_shell, stdout=fout, stderr=ferr)
+                pid = proc.pid
+                print(f"PID: {pid}")
+                proc.wait()
+                exit_code = proc.returncode
+
+            end_time = time.time()
+            end_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            duration = format_duration(end_time - start_time)
+
+            if proc.returncode == 0:
+                status = "Completed"
+                completed += 1
+            else:
+                status = "Failed"
+                failed += 1
+
+            print(f"[Workflow #{idx}] {status} at {end_ts}")
+            print(f"Duration: {duration} | Exit code: {exit_code}")
+            print("-"*70)
+
+        except KeyboardInterrupt:
+            end_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            duration = format_duration(time.time() - start_time)
+            status = "Aborted"
+            exit_code = "-"
+            failed += 1
+            print(f"[Workflow #{idx}] Aborted due to keyboard interrupt")
+            print("-"*70)
+            break
+        except Exception as e:
+            end_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            duration = format_duration(time.time() - start_time)
+            status = "Error"
+            exit_code = "-"
+            failed += 1
+            print(f"[Workflow #{idx}] Aborted due to unexpected error: {e}")
+            print("-"*70)
+
+        workflow_summary.append({
+            "Workflow": idx,
+            "Line": line_no,
+            "PID": pid,
+            "Status": status,
+            "Exit": exit_code,
+            "Start": start_ts,
+            "End": end_ts,
+            "Duration": duration
+        })
+
+    # --- Sort failed workflows on top ---
+    workflow_summary.sort(key=lambda x: 0 if x['Status'] != "Failed" else -1, reverse=True)
+
+    # --- Print summary table ---
+    print("\n====================== Workflow Summary ======================")
+    print(f"| {'WF#':<4} | {'Line':<4} | {'PID':<7} | {'Status':<10} | {'Exit':<4} | {'Start':<19} | {'End':<19} | {'Duration':<10} |")
+    print("|" + "-"*4 + "|" + "-"*6 + "|" + "-"*9 + "|" + "-"*12 + "|" + "-"*6 + "|" + "-"*21 + "|" + "-"*21 + "|" + "-"*12 + "|")
+    for w in workflow_summary:
+        pid_str = str(w['PID']) if w['PID'] is not None else "-"
+        exit_str = str(w['Exit']) if w['Exit'] is not None else "-"
+        print(f"| {w['Workflow']:<4} | {w['Line']:<4} | {pid_str:<7} | {w['Status']:<10} | {exit_str:<4} | {w['Start']:<19} | {w['End']:<19} | {w['Duration']:<10} |")
+    print("-"*90)
+    print(f"Total workflows queued : {len(lines_to_run)}")
+    print(f"Completed workflows    : {completed}")
+    print(f"Failed workflows       : {failed}")
+    print(f"Pending workflows      : {len(lines_to_run) - completed - failed}")
+    print("="*70)
+    print(">>> Jobsubmit Completed")
+    print("="*70)
+
+
+def main():
+    try:
+        file_arg, lines_arg = parse_args()
+        with open(file_arg) as f:
+            total_lines = sum(1 for line in f if line.strip())
+        lines_to_run = parse_line_selection(lines_arg, total_lines)
+        run_jobs(file_arg, lines_to_run)
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+    except ValueError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("Keyboard interrupt detected. Exiting...")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        sys.exit(1)
+
+if __name__ == "__main__":
+    main()

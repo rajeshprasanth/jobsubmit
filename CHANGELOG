@@ -21,3 +21,14 @@ Version - 1.0.4
 Changed on Sat Jan  1 17:08:33 IST 2022
 	added millisecond to log file
 	added install.sh for installation with rollbacks
+
+Version - 1.0.5
+	Changed on Fri Dec 20 07:50:00 IST 2025
+		refactored argument parsing and job execution functions
+		added parse_line_selection() for flexible job selection
+		added format_duration() for human-readable runtimes
+		added cleanup() for safe temporary resource handling
+		added print_version() for explicit version reporting
+		removed deprecated help_msg() and version() functions
+		standardized shebang and naming conventions
+		improved output formatting and robustness

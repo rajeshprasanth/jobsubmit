@@ -1,5 +1,109 @@
-ls
-tree
-whoami
-uname
-sleep 10
+echo Workflow 1 OK
+echo Workflow 2 OK
+echo Workflow 3 OK
+echo Workflow 4 OK
+echo Workflow 5 OK
+python -c "import sys; sys.exit(1)"
+echo Workflow 7 OK
+echo Workflow 8 OK
+echo Workflow 9 OK
+python -c "import time; time.sleep(1)"
+
+echo Workflow 11 OK
+echo Workflow 12 OK
+python -c "import sys; sys.exit(1)"
+echo Workflow 14 OK
+echo Workflow 15 OK
+echo Workflow 16 OK
+echo Workflow 17 OK
+echo Workflow 18 OK
+echo Workflow 19 OK
+python -c "import time; time.sleep(1)"
+
+echo Workflow 21 OK
+echo Workflow 22 OK
+echo Workflow 23 OK
+python -c "import sys; sys.exit(1)"
+echo Workflow 25 OK
+echo Workflow 26 OK
+echo Workflow 27 OK
+echo Workflow 28 OK
+echo Workflow 29 OK
+python -c "import time; time.sleep(1)"
+
+echo Workflow 31 OK
+echo Workflow 32 OK
+echo Workflow 33 OK
+echo Workflow 34 OK
+python -c "import sys; sys.exit(1)"
+echo Workflow 36 OK
+echo Workflow 37 OK
+echo Workflow 38 OK
+echo Workflow 39 OK
+python -c "import time; time.sleep(1)"
+
+echo Workflow 41 OK
+echo Workflow 42 OK
+echo Workflow 43 OK
+echo Workflow 44 OK
+echo Workflow 45 OK
+python -c "import sys; sys.exit(1)"
+echo Workflow 47 OK
+echo Workflow 48 OK
+echo Workflow 49 OK
+python -c "import time; time.sleep(1)"
+
+echo Workflow 51 OK
+echo Workflow 52 OK
+echo Workflow 53 OK
+echo Workflow 54 OK
+python -c "import sys; sys.exit(1)"
+echo Workflow 56 OK
+echo Workflow 57 OK
+echo Workflow 58 OK
+echo Workflow 59 OK
+python -c "import time; time.sleep(1)"
+
+echo Workflow 61 OK
+echo Workflow 62 OK
+echo Workflow 63 OK
+echo Workflow 64 OK
+echo Workflow 65 OK
+python -c "import sys; sys.exit(1)"
+echo Workflow 67 OK
+echo Workflow 68 OK
+echo Workflow 69 OK
+python -c "import time; time.sleep(1)"
+
+echo Workflow 71 OK
+echo Workflow 72 OK
+echo Workflow 73 OK
+python -c "import sys; sys.exit(1)"
+echo Workflow 75 OK
+echo Workflow 76 OK
+echo Workflow 77 OK
+echo Workflow 78 OK
+echo Workflow 79 OK
+python -c "import time; time.sleep(1)"
+
+echo Workflow 81 OK
+echo Workflow 82 OK
+echo Workflow 83 OK
+echo Workflow 84 OK
+python -c "import sys; sys.exit(1)"
+echo Workflow 86 OK
+echo Workflow 87 OK
+echo Workflow 88 OK
+echo Workflow 89 OK
+python -c "import time; time.sleep(1)"
+
+echo Workflow 91 OK
+echo Workflow 92 OK
+echo Workflow 93 OK
+echo Workflow 94 OK
+echo Workflow 95 OK
+python -c "import sys; sys.exit(1)"
+echo Workflow 97 OK
+echo Workflow 98 OK
+echo Workflow 99 OK
+python -c "import time; time.sleep(1)"
